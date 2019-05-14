@@ -1,2 +1,5 @@
 # Ansible retry files
 *.retry
+
+# Ignore the inventory file the README instructs users to make
+inventory/inventory
