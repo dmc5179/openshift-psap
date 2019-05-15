@@ -1,0 +1,25 @@
+---
+
+- name: Update grub to disable the nouveau driver
+  shell: grubby --update-kernel=ALL --args="rd.driver.blacklist=nouveau nouveau.modeset=0"
+
+- name: copy nouveau blacklist config up to fast_nodes
+  copy:
+    src: nouveau.conf
+    dest: /etc/modprobe.d/nouveau.conf
+    mode: 0644
+
+# This reboots the host but results in an ansible error
+#- name: reboot nodes to activate the cmdline options
+#  shell: sleep 2 && shutdown -r now "psap tuned-setup role"
+#  async: 1
+#  poll: 0
+#
+#- name: wait for nodes to finish rebooting
+#  local_action:
+#    module: wait_for
+#      host={{ inventory_hostname }}
+#      port=22
+#      delay=1
+#      timeout=900
+

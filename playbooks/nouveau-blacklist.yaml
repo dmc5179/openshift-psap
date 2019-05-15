@@ -1,0 +1,6 @@
+---
+- name: Blacklist nouveau drivers
+  hosts: "{{ hosts_to_apply }}"
+  user: root
+  roles:
+    - nouveau-blacklist
