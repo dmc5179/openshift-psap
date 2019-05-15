@@ -11,21 +11,47 @@
     dest: /usr/libexec/oci/hooks.d/oci-nvidia-hook
     mode: 0755
 
+- name: copy oci-nvidia-hook json up to fast_nodes
+  copy:
+    src: oci-nvidia-hook.json
+    dest: /usr/share/containers/oci/hooks.d/oci-nvidia-hook.json
+    mode: 0644
+
 - name: sleeping for a few seconds as there seems to be a race here.
   shell: sleep 5
 
-# # ls -alZ /dev/nvidia*                                        
-# crw-rw-rw-. root root unconfined_u:object_r:xserver_misc_device_t:s0 /dev/nvidia0     
-# crw-rw-rw-. root root unconfined_u:object_r:xserver_misc_device_t:s0 /dev/nvidiactl   
-# crw-rw-rw-. root root unconfined_u:object_r:device_t:s0 /dev/nvidia-uvm               
-# crw-rw-rw-. root root unconfined_u:object_r:device_t:s0 /dev/nvidia-uvm-tools         
-
+# This should fail due to SELinux
 - name: e2e test nvidia-container-runtime-hook integration
   shell: docker run -i --rm docker.io/mirrorgooglecontainers/cuda-vector-add:v0.1
   ignore_errors: true
 
+# Leaving this playbook here since it is possible we get files that are not part
+# of the semanage commands below. This will at least make it work until there
+# is a relabel
 - name: update SELinux type on nvidia device files
   shell: chcon -t container_file_t /dev/nvidia*
+
+# Device files are remade each boot which causes them to lose their
+# SELinux context unless there is a pattern applied when they are created
+- name: Add SELinux file context for /dev/nvidia-uvm to survive relabel and reboot.
+  shell: semanage fcontext -a -t container_file_t '/dev/nvidia-uvm'
+  ignore_errors: true
+
+- name: Add SELinux file context for /dev/nvidia-uvm-tools to survive relabel and reboot.
+  shell: semanage fcontext -a -t container_file_t '/dev/nvidia-uvm-tools'
+  ignore_errors: true
+
+- name: Add SELinux file context for /dev/nvidia0 to survive relabel and reboot.
+  shell: semanage fcontext -a -t container_file_t '/dev/nvidia0'
+  ignore_errors: true
+
+- name: Add SELinux file context for /dev/nvidiactl to survive relabel and reboot.
+  shell: semanage fcontext -a -t container_file_t '/dev/nvidiactl'
+  ignore_errors: true
+
+- name: Add SELinux file context for /dev/nvidia-modeset to survive relabel and reboot.
+  shell: semanage fcontext -a -t container_file_t '/dev/nvidia-modeset'
+  ignore_errors: true
 
 - name: e2e test nvidia-container-runtime-hook integration
   shell: docker run -i --rm docker.io/mirrorgooglecontainers/cuda-vector-add:v0.1
