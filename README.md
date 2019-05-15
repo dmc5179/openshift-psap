@@ -5,9 +5,16 @@ OpenShift Performance-Sensitive Application Platform Artifacts
 
 ```git clone -b ocp39 https://github.com/redhat-performance/openshift-psap```
 
-* Edit the inventory/inventory.example and replace the master and fast_nodes with node names in your cluster.
+* Copy the inventory/inventory.example file to inventory/inventory
+* Edit the inventory/inventory and replace the master and fast_nodes with node names in your cluster.
 
 ## Ansible Roles
+
+### Disable nouveau driver
+This role will disable the nouveau driver to prevent interference with the Nvidia Driver
+After editing the inventory file, run:
+```ansible-playbook -i ./inventory/inventory -e hosts_to_apply="fast_nodes" ./playbooks/nouveau-blacklist.yaml```
+where `fast_nodes` is the Ansible inventory groupname for your nodes with GPUs (Or will have GPUs if you plan to change the instance type)
 
 ### nvidia-driver-install
 This role will pull down the latest 3rd party NVIDIA driver and install it.
@@ -20,11 +27,11 @@ This playbook will install the nvidia-container-runtime-hook which is used to
 mount libraries from the host into a pod whose dockerfile has certain
 environment variables. It is invoked as the `nvidia-driver-install` playbook above.
 
-### nvidia-device-plugin
+### nvidia-device-plugin (Doesn't actually work yet but you don't have to have this)
 This playbook will deploy the NVIDIA device-plugin daemonset, which allows you to schedule GPU pods. 
-```ansible-playbook -i ./inventory/inventory -e hosts_to_apply="master_hostname" -e gpu_hosts="fast_nodes" ./playbooks/nvidia-driver-install.yaml```
+```ansible-playbook -i ./inventory/inventory -e hosts_to_apply="master" -e gpu_hosts="fast_nodes" ./playbooks/nvidia-device-plugin.yaml```
 
-`master_hostname` is the inventory hostname of one of your masters. `fast_nodes` is the inventory groupname for your nodes with GPUs.
+`master` is the inventory hostname of one of your masters. `fast_nodes` is the inventory groupname for your nodes with GPUs.
 
 After deploying, run:
 ```oc describe node x.x.x.x | grep -A15 Capacity```.  You should see nvidia.com/gpu=N where N is the number of GPUs in the system.
