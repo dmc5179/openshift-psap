@@ -9,17 +9,7 @@
     dest: /etc/modprobe.d/nouveau.conf
     mode: 0644
 
-# This reboots the host but results in an ansible error
-#- name: reboot nodes to activate the cmdline options
-#  shell: sleep 2 && shutdown -r now "psap tuned-setup role"
-#  async: 1
-#  poll: 0
-#
-#- name: wait for nodes to finish rebooting
-#  local_action:
-#    module: wait_for
-#      host={{ inventory_hostname }}
-#      port=22
-#      delay=1
-#      timeout=900
+# This is the newer way to do reboots in Ansible 2.7
+- name: Reboot the nodes to activate the cmdline options
+  reboot:
 
