@@ -1,5 +1,6 @@
 # Ansible retry files
 *.retry
+*.swp
 
 # Ignore the inventory file the README instructs users to make
 inventory/inventory
