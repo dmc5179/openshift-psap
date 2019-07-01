@@ -12,8 +12,8 @@
 - name: install NVIDIA drivers
   yum:  name=cuda state=present
 
-- name: load NVIDIA and unified memory kernel modules
-  shell: nvidia-modprobe && nvidia-modprobe -u
+#- name: load NVIDIA and unified memory kernel modules
+#  shell: nvidia-modprobe && nvidia-modprobe -u
 
-- name: test drivers
-  shell: nvidia-smi --query-gpu=gpu_name --format=csv,noheader --id=0
+#- name: test drivers
+#  shell: nvidia-smi --query-gpu=gpu_name --format=csv,noheader --id=0

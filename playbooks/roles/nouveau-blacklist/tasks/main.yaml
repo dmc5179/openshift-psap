@@ -10,6 +10,6 @@
     mode: 0644
 
 # This is the newer way to do reboots in Ansible 2.7
-- name: Reboot the nodes to activate the cmdline options
-  reboot:
+#- name: Reboot the nodes to activate the cmdline options
+#  reboot:
 
