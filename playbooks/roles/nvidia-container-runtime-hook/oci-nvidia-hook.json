@@ -1,11 +1,6 @@
 {
-    "version": "1.0.0",
-    "hook": {
-        "path": "/usr/bin/nvidia-container-runtime-hook",
-        "args": ["prestart"]
-    },
-    "when": {
-        "always": true
-    },
-    "stages": ["prestart"]
+
+   "hasbindmounts": true,
+   "hook": "/usr/bin/nvidia-container-runtime-hook",
+   "stage": [ "prestart" ]
 }
