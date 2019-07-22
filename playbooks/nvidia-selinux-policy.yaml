@@ -1,0 +1,6 @@
+---
+- name: Install the SELinux Modules to support GPUs
+  hosts: "{{ hosts_to_apply }}"
+  user: root
+  roles:
+    - nvidia-selinux-policy
