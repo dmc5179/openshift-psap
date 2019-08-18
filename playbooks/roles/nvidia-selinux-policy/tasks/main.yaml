@@ -23,4 +23,9 @@
 - name: Restorecon all files that the DevicePlugin will need
   shell: restorecon -Rv /var/lib/kubelet
 
-
+# For now SELinux has to be disabled on the GPU nodes.
+# Looking to fix this soon
+- name: Put SELinux in permissive mode, logging actions that would be blocked.
+  selinux:
+    policy: targeted
+    state: permissive
