@@ -1,0 +1,15 @@
+---
+
+- name: reboot nodes to activate the cmdline options
+  shell: sleep 2 && shutdown -r now "psap tuned-setup role"
+  async: 1
+  poll: 0
+
+- name: wait for nodes to finish rebooting
+  local_action:
+    module: wait_for
+      host={{ inventory_hostname }}
+      port=22
+      delay=1
+      timeout=900
+
