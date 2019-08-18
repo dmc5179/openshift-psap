@@ -1,0 +1,6 @@
+---
+- name: Reboot Nodes
+  hosts: "{{ hosts_to_apply }}"
+  user: root
+  roles:
+    - reboot
