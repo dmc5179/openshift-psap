@@ -1,27 +1,27 @@
 ---
 
-- name: Pull the SELinux Policy Module
-  get_url:
-    url: https://raw.githubusercontent.com/zvonkok/origin-ci-gpu/master/selinux/nvidia-container.pp
-    dest: /tmp/nvidia-container.pp
-    mode: 0600
+#- name: Pull the SELinux Policy Module
+#  get_url:
+#    url: https://raw.githubusercontent.com/zvonkok/origin-ci-gpu/master/selinux/nvidia-container.pp
+#    dest: /tmp/nvidia-container.pp
+#    mode: 0600
 
-- name: Load the SELinux Policy Module for Nvidia
-  shell: semodule -i /tmp/nvidia-container.pp
+#- name: Load the SELinux Policy Module for Nvidia
+#  shell: semodule -i /tmp/nvidia-container.pp
 
-- name: Remove temp SELinux Policy Module File
-  file:
-    path: /tmp/nvidia-container.pp
-    state: absent
+#- name: Remove temp SELinux Policy Module File
+#  file:
+#    path: /tmp/nvidia-container.pp
+#    state: absent
 
-- name: Restorecon all files that the prestart hook will need
-  shell: nvidia-container-cli -k list | restorecon -v -f -
+#- name: Restorecon all files that the prestart hook will need
+#  shell: nvidia-container-cli -k list | restorecon -v -f -
 
-- name: Restorecon  all accessed devices
-  shell: restorecon -Rv /dev
+#- name: Restorecon  all accessed devices
+#  shell: restorecon -Rv /dev
 
-- name: Restorecon all files that the DevicePlugin will need
-  shell: restorecon -Rv /var/lib/kubelet
+#- name: Restorecon all files that the DevicePlugin will need
+#  shell: restorecon -Rv /var/lib/kubelet
 
 # For now SELinux has to be disabled on the GPU nodes.
 # Looking to fix this soon
