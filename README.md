@@ -13,13 +13,23 @@ OpenShift Performance-Sensitive Application Platform Artifacts
 ### Disable nouveau driver
 This role will disable the nouveau driver to prevent interference with the Nvidia Driver
 After editing the inventory file, run:
-```ansible-playbook -i ./inventory/inventory -e hosts_to_apply="fast_nodes" ./playbooks/nouveau-blacklist.yaml```
+```
+ansible-playbook -i ./inventory/inventory -e hosts_to_apply="fast_nodes" ./playbooks/nouveau-blacklist.yaml
+```
 where `fast_nodes` is the Ansible inventory groupname for your nodes with GPUs (Or will have GPUs if you plan to change the instance type)
+
+### Configure SELinux
+
+```
+ansible-playbook -i ./inventory/inventory -e hosts_to_apply="fast_nodes" ./playbooks/nvidia-selinux-policy.yam
+```
 
 ### nvidia-driver-install
 This role will pull down the latest 3rd party NVIDIA driver and install it.
 After editing the inventory file, run:
-```ansible-playbook -i ./inventory/inventory -e hosts_to_apply="fast_nodes" ./playbooks/nvidia-driver-install.yaml```
+```
+ansible-playbook -i ./inventory/inventory -e hosts_to_apply="fast_nodes" ./playbooks/nvidia-driver-install.yaml
+```
 where `fast_nodes` is the Ansible inventory groupname for your nodes with GPUs
 
 ### nvidia-container-runtime-hook
@@ -29,7 +39,9 @@ environment variables. It is invoked as the `nvidia-driver-install` playbook abo
 
 ### nvidia-device-plugin (Doesn't actually work yet but you don't have to have this)
 This playbook will deploy the NVIDIA device-plugin daemonset, which allows you to schedule GPU pods. 
-```ansible-playbook -i ./inventory/inventory -e hosts_to_apply="master" -e gpu_hosts="fast_nodes" ./playbooks/nvidia-device-plugin.yaml```
+```
+ansible-playbook -i ./inventory/inventory -e hosts_to_apply="master" -e gpu_hosts="fast_nodes" ./playbooks/nvidia-device-plugin.yaml
+```
 
 `master` is the inventory hostname of one of your masters. `fast_nodes` is the inventory groupname for your nodes with GPUs.
 
