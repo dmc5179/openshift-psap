@@ -3,7 +3,9 @@ OpenShift Performance-Sensitive Application Platform Artifacts
 
 * Master is the latest version of OpenShift (possibly not publicly released yet).  Each public release will have a branch.  Make sure to use the branch corresponding to the version of OpenShift that you're running.
 
-```git clone -b ocp39 https://github.com/redhat-performance/openshift-psap```
+```
+git clone -b ocp311 https://github.com/redhat-performance/openshift-psap
+```
 
 * Copy the inventory/inventory.example file to inventory/inventory
 * Edit the inventory/inventory and replace the master and fast_nodes with node names in your cluster.
